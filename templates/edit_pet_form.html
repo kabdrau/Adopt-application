@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="text-center">
+    <h2>{{ pet.name }}</h2>
+    {% if pet.age %}
+    <p class="text-secondary bg-light"><i>{{ pet.species }} {{ pet.age }} years old</i> </p>
+    {% endif %}
+    <img class="w-25 img-fluid img-thumbnail" src="{{ pet.photo_url }}">
+</div>
+
+<form method="POST">
+
+    {{ form.hidden_tag() }}
+
+    {% for field in form if field.widget.input_type != 'hidden'%}
+
+    <div class='form-group'>
+        {{ field.label }}
+        {% if field.name == "available" %}
+        {{ field(class="custom-control custom-switch") }}
+        {% else %}
+        {{ field(class="form-control") }}
+        {% endif %}
+
+    <span>
+        {% if field.errors %}
+        {% for error in field.errors %}
+            <b class="text-danger">{{ error }}</b>
+        {% endfor %}
+        {% endif %}
+    </span>
+
+    </div>
+
+    {% endfor %}
+
+    <button class="btn btn-primary btn-success btn-md" type="submit">Update</button>
+    <button class="btn btn-primary btn-danger btn-md" formaction="/{{ pet.id }}/delete">Delete</button>
+</form>
+
+{% endblock %}
